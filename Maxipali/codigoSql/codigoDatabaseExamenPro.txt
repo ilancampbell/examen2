@@ -1,0 +1,53 @@
+create database Maxipali
+
+use Maxipali
+
+create table Cajeros (
+Id_cajeros int identity(1,1) primary key,
+Nombre nvarchar(50)not null,
+Apellido nvarchar(50)not null
+)
+insert into Cajeros values ('Nazareth','Carmona')
+insert into Cajeros values ('Juan','Lopez')
+
+
+select * from cajeros
+
+create table Productos(
+Id_productos int identity(100,1) primary key,
+Nombre nvarchar(50)not null,
+Precio float default (0)
+)
+
+insert into Productos values ('Atun',3000)
+insert into Productos values ('Arroz',5000)
+insert into Productos values ('Coca cola',2500)
+
+select * from Productos
+
+update Productos set Nombre = 'Pepsi', Precio = 2000 where Nombre = 'Coca cola'
+
+create table Maquinas_regis(
+Id_maquinas_regis int identity(1000,1) primary key,
+Piso int
+)
+insert into Maquinas_regis values (1)
+insert into Maquinas_regis values (2)
+select * from Maquinas_regis
+
+create table Ventas (
+Id_venta int identity(10000,1) primary key,
+Cajero int,
+Maquina int,
+Producto int,
+constraint Cajero foreign key(Cajero) references Cajeros(Id_cajeros),
+constraint Maquina foreign key(Maquina) references Maquinas_regis(Id_maquinas_regis),
+constraint Producto foreign key(Producto) references Productos(Id_productos),
+Fecha datetime null
+)
+
+select productos.Id_productos, productos.Nombre, cajeros.Id_cajeros, cajeros.Nombre, Maquinas_regis.Id_maquinas_regis from Ventas
+inner join Ventas on Ventas.Id_venta = Ventas.Cajero
+inner join Productos on Productos.Id_productos = Ventas.Producto
+inner join Maquinas_regis on Maquinas_regis.Id_maquinas_regis = Ventas.Maquina
+
